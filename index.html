@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moon Phase Widget</title>
+    <style>
+        body {
+            text-align: center;
+            background-color: transparent;
+            font-family: Arial, sans-serif;
+        }
+        .moon-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .moon-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #0010CF; /* Blue text */
+            margin-bottom: 5px;
+        }
+        .moon-wrapper {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            border: 4px solid #0010CF; /* Blue border */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .moon {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #dcdcdc 70%, #a9a9a9 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .shadow {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: black;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .moon-phase-text {
+            margin-top: 10px;
+            font-size: 16px;
+            color: #0010CF; /* Blue text */
+        }
+    </style>
+</head>
+<body>
+    <div class="moon-container">
+        <div class="moon-title">Moon Phase</div> <!-- Added Title -->
+        <div class="moon-wrapper">
+            <div class="moon">
+                <div class="shadow" id="moon-shadow"></div>
+            </div>
+        </div>
+        <div class="moon-phase-text" id="moon-phase-text">Loading...</div>
+    </div>
+
+    <script>
+        function getMoonPhase() {
+            const date = new Date();
+            const knownNewMoon = new Date(2024, 0, 11); // Adjust this to a recent new moon date
+            const daysSinceNewMoon = (date - knownNewMoon) / (1000 * 60 * 60 * 24);
+            const phase = ((daysSinceNewMoon % 29.53) + 29.53) % 29.53;
+            
+            let phaseName = "";
+            let shadowPosition = "50%";
+
+            if (phase < 1.5) { phaseName = "New Moon"; shadowPosition = "100%"; }
+            else if (phase < 7.4) { phaseName = "Waxing Crescent"; shadowPosition = "75%"; }
+            else if (phase < 8.4) { phaseName = "First Quarter"; shadowPosition = "50%"; }
+            else if (phase < 14.8) { phaseName = "Waxing Gibbous"; shadowPosition = "25%"; }
+            else if (phase < 15.8) { phaseName = "Full Moon"; shadowPosition = "0%"; }
+            else if (phase < 22.1) { phaseName = "Waning Gibbous"; shadowPosition = "-25%"; }
+            else if (phase < 23.1) { phaseName = "Last Quarter"; shadowPosition = "-50%"; }
+            else { phaseName = "Waning Crescent"; shadowPosition = "-75%"; }
+
+            document.getElementById("moon-shadow").style.left = shadowPosition;
+            document.getElementById("moon-phase-text").textContent = phaseName;
+        }
+
+        getMoonPhase();
+    </script>
+</body>
+</html>
