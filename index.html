@@ -77,4 +77,43 @@
             let phaseName = "";
             let shadowClip = "";
 
-            if (
+            if (phase < 1.5) {
+                phaseName = "New Moon";
+                shadowClip = "circle(100% at 50% 50%)"; // Fully shaded
+            } else if (phase < 7.4) {
+                phaseName = "Waxing Crescent";
+                shadowClip = "ellipse(50% 50% at 25% 50%)"; // Right crescent shadow
+            } else if (phase < 8.4) {
+                phaseName = "First Quarter";
+                shadowClip = "inset(0 50% 0 0)"; // Right half-shadowed
+            } else if (phase < 14.8) {
+                phaseName = "Waxing Gibbous";
+                shadowClip = "ellipse(50% 50% at 75% 50%)"; // Mostly lit, small right shadow
+            } else if (phase < 15.8) {
+                phaseName = "Full Moon";
+                shadowClip = "circle(0% at 50% 50%)"; // No shadow (fully visible)
+            } else if (phase < 22.1) {
+                phaseName = "Waning Gibbous";
+                shadowClip = "ellipse(50% 50% at 25% 50%)"; // Mostly lit, small left shadow
+            } else if (phase < 23.1) {
+                phaseName = "Last Quarter";
+                shadowClip = "inset(0 0 0 50%)"; // Left half-shadowed
+            } else {
+                phaseName = "Waning Crescent";
+                shadowClip = "ellipse(50% 50% at 75% 50%)"; // Left crescent shadow
+            }
+
+            // Apply shading effect
+            document.getElementById("moon-shadow").style.clipPath = shadowClip;
+            
+            // Update the moon phase text
+            document.getElementById("moon-phase-text").textContent = phaseName;
+        }
+
+        // Run the function
+        getMoonPhase();
+    </script>
+</body>
+</html>
+
+    
