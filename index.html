@@ -70,7 +70,7 @@
     <script>
         function getMoonPhase() {
             const date = new Date();
-            const knownNewMoon = new Date(2024, 0, 11);
+            const knownNewMoon = new Date(2024, 10, 1);
             const daysSinceNewMoon = (date - knownNewMoon) / (1000 * 60 * 60 * 24);
             const phase = ((daysSinceNewMoon % 29.53) + 29.53) % 29.53;
             
