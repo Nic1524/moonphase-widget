@@ -35,7 +35,7 @@
             width: 30px;
             height: 30px;
             border-radius: 50%;
-            background: radial-gradient(circle, #dcdcdc 70%, #a9a9a9 100%);
+            background-color: #dcdcdc; /* Light gray to resemble the Moon */
             position: relative;
             overflow: hidden;
         }
@@ -47,7 +47,7 @@
             background-color: black;
             top: 0;
             left: 0;
-            clip-path: circle(0% at 50% 50%);
+            clip-path: circle(50% at 50% 50%); /* Default to fully shadowed */
         }
         .moon-phase-text {
             margin-top: 5px;
@@ -77,40 +77,4 @@
             let phaseName = "";
             let shadowClip = "";
 
-            if (phase < 1.5) {
-                phaseName = "New Moon";
-                shadowClip = "circle(50% at 50% 50%)"; // Full shadow
-            } else if (phase < 7.4) {
-                phaseName = "Waxing Crescent";
-                shadowClip = "ellipse(50% 50% at 25% 50%)"; // Right crescent
-            } else if (phase < 8.4) {
-                phaseName = "First Quarter";
-                shadowClip = "inset(0 50% 0 0)"; // Right half shadow
-            } else if (phase < 14.8) {
-                phaseName = "Waxing Gibbous";
-                shadowClip = "ellipse(50% 50% at 75% 50%)"; // Right mostly lit
-            } else if (phase < 15.8) {
-                phaseName = "Full Moon";
-                shadowClip = "circle(0% at 50% 50%)"; // No shadow
-            } else if (phase < 22.1) {
-                phaseName = "Waning Gibbous";
-                shadowClip = "ellipse(50% 50% at 25% 50%)"; // Left mostly lit
-            } else if (phase < 23.1) {
-                phaseName = "Last Quarter";
-                shadowClip = "inset(0 0 0 50%)"; // Left half shadow
-            } else {
-                phaseName = "Waning Crescent";
-                shadowClip = "ellipse(50% 50% at 75% 50%)"; // Left crescent
-            }
-
-            // Apply shading effect
-            document.getElementById("moon-shadow").style.clipPath = shadowClip;
-            document.getElementById("moon-phase-text").textContent = phaseName;
-        }
-
-        // Run the function
-        getMoonPhase();
-    </script>
-</body>
-</html>
-
+            if (
