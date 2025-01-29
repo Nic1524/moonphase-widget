@@ -17,23 +17,23 @@
             justify-content: center;
         }
         .moon-title {
-            font-size: 18px;
+            font-size: 14px; /* Reduced font size */
             font-weight: bold;
-            color: #0010CF; /* Blue text */
-            margin-bottom: 5px;
+            color: #0010CF;
+            margin-bottom: 3px;
         }
         .moon-wrapper {
-            width: 110px;
-            height: 110px;
+            width: 60px; /* Smaller wrapper */
+            height: 60px;
             border-radius: 50%;
-            border: 4px solid #0010CF; /* Blue border */
+            border: 2px solid #0010CF; /* Smaller border */
             display: flex;
             align-items: center;
             justify-content: center;
         }
         .moon {
-            width: 100px;
-            height: 100px;
+            width: 55px; /* Smaller moon */
+            height: 55px;
             border-radius: 50%;
             background: radial-gradient(circle, #dcdcdc 70%, #a9a9a9 100%);
             position: relative;
@@ -41,8 +41,8 @@
         }
         .shadow {
             position: absolute;
-            width: 100px;
-            height: 100px;
+            width: 55px;
+            height: 55px;
             border-radius: 50%;
             background-color: black;
             top: 0;
@@ -50,15 +50,15 @@
             transform: translateX(-50%);
         }
         .moon-phase-text {
-            margin-top: 10px;
-            font-size: 16px;
-            color: #0010CF; /* Blue text */
+            margin-top: 5px; /* Less spacing */
+            font-size: 12px; /* Smaller text */
+            color: #0010CF;
         }
     </style>
 </head>
 <body>
     <div class="moon-container">
-        <div class="moon-title">Moon Phase</div> <!-- Added Title -->
+        <div class="moon-title">Moon Phase</div>
         <div class="moon-wrapper">
             <div class="moon">
                 <div class="shadow" id="moon-shadow"></div>
@@ -70,7 +70,7 @@
     <script>
         function getMoonPhase() {
             const date = new Date();
-            const knownNewMoon = new Date(2024, 0, 11); // Adjust this to a recent new moon date
+            const knownNewMoon = new Date(2024, 0, 11);
             const daysSinceNewMoon = (date - knownNewMoon) / (1000 * 60 * 60 * 24);
             const phase = ((daysSinceNewMoon % 29.53) + 29.53) % 29.53;
             
