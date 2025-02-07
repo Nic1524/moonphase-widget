@@ -35,9 +35,10 @@
             width: 30px;
             height: 30px;
             border-radius: 50%;
-            background-color: #909090; /* Light gray to resemble the Moon */
+            background-color: #909090; /* Restored grey color for the moon */
             position: relative;
             overflow: hidden;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
         }
         .shadow {
             position: absolute;
@@ -80,7 +81,6 @@
 
             let phaseName = "";
             let shadowClip = "";
-            let backgroundColor = "#909090"; // Light gray for the moon
 
             // Define phases based on moon percentage
             if (moonPercentage < 1.5) {
@@ -105,14 +105,14 @@
 
             // Apply shading effect based on moon percentage
             document.getElementById("moon-shadow").style.clipPath = shadowClip;
-            document.querySelector(".moon").style.backgroundColor = backgroundColor;
             
             // Update the moon phase text with phase name and percentage
             document.getElementById("moon-phase-text").textContent = `${phaseName} - ${moonPercentage.toFixed(2)}% Illuminated`;
         }
 
-        // Run the function
+        // Run the function to display the moon phase and shading
         getMoonPhase();
     </script>
 </body>
 </html>
+
