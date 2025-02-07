@@ -35,7 +35,7 @@
             width: 30px;
             height: 30px;
             border-radius: 50%;
-            background-color:#909090; /* Light gray to resemble the Moon */
+            background-color: #909090; /* Light gray to resemble the Moon */
             position: relative;
             overflow: hidden;
         }
@@ -47,7 +47,6 @@
             background-color: black;
             top: 0;
             left: 0;
-            clip-path: circle(50% at 50% 50%); /* Default to fully shadowed */
         }
         .moon-phase-text {
             margin-top: 5px;
@@ -82,25 +81,25 @@
                 shadowClip = "circle(100% at 50% 50%)"; // Fully shaded
             } else if (phase < 7.4) {
                 phaseName = "Waxing Crescent";
-                shadowClip = "ellipse(50% 50% at 25% 50%)"; // Right crescent shadow
+                shadowClip = "ellipse(50% 50% at 75% 50%)"; // Left crescent shadow
             } else if (phase < 8.4) {
                 phaseName = "First Quarter";
-                shadowClip = "inset(0 50% 0 0)"; // Right half-shadowed
+                shadowClip = "inset(0 0 0 50%)"; // Left half-shadowed
             } else if (phase < 14.8) {
                 phaseName = "Waxing Gibbous";
-                shadowClip = "ellipse(50% 50% at 75% 50%)"; // Mostly lit, small right shadow
+                shadowClip = "ellipse(50% 50% at 25% 50%)"; // Small left shadow
             } else if (phase < 15.8) {
                 phaseName = "Full Moon";
-                shadowClip = "circle(0% at 50% 50%)"; // No shadow (fully visible)
+                shadowClip = "circle(0% at 50% 50%)"; // No shadow
             } else if (phase < 22.1) {
                 phaseName = "Waning Gibbous";
-                shadowClip = "ellipse(50% 50% at 25% 50%)"; // Mostly lit, small left shadow
+                shadowClip = "ellipse(50% 50% at 75% 50%)"; // Small right shadow
             } else if (phase < 23.1) {
                 phaseName = "Last Quarter";
-                shadowClip = "inset(0 0 0 50%)"; // Left half-shadowed
+                shadowClip = "inset(0 50% 0 0)"; // Right half-shadowed
             } else {
                 phaseName = "Waning Crescent";
-                shadowClip = "ellipse(50% 50% at 75% 50%)"; // Left crescent shadow
+                shadowClip = "ellipse(50% 50% at 25% 50%)"; // Right crescent shadow
             }
 
             // Apply shading effect
@@ -115,5 +114,3 @@
     </script>
 </body>
 </html>
-
-    
