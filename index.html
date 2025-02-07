@@ -38,6 +38,7 @@
             background-color: #909090; /* Light gray to resemble the Moon */
             position: relative;
             overflow: hidden;
+            background: radial-gradient(circle, #fff 70%, #909090 70%); /* Gradient for realistic shading */
         }
         .shadow {
             position: absolute;
@@ -47,6 +48,8 @@
             background-color: black;
             top: 0;
             left: 0;
+            clip-path: circle(100% at 50% 50%); /* Default to fully shaded */
+            transition: clip-path 0.3s ease; /* Smooth transition */
         }
         .moon-phase-text {
             margin-top: 5px;
@@ -75,35 +78,45 @@
 
             let phaseName = "";
             let shadowClip = "";
+            let backgroundGradient = "";
 
             if (phase < 1.5) {
                 phaseName = "New Moon";
                 shadowClip = "circle(100% at 50% 50%)"; // Fully shaded
+                backgroundGradient = "radial-gradient(circle, #333 70%, #909090 70%)"; // Dark shadow
             } else if (phase < 7.4) {
                 phaseName = "Waxing Crescent";
                 shadowClip = "ellipse(50% 50% at 75% 50%)"; // Left crescent shadow
+                backgroundGradient = "radial-gradient(circle, #909090 70%, #fff 70%)"; // Light crescent shadow
             } else if (phase < 8.4) {
                 phaseName = "First Quarter";
                 shadowClip = "inset(0 0 0 50%)"; // Left half-shadowed
+                backgroundGradient = "radial-gradient(circle, #909090 50%, #fff 50%)"; // Half and half shadow
             } else if (phase < 14.8) {
                 phaseName = "Waxing Gibbous";
                 shadowClip = "ellipse(50% 50% at 25% 50%)"; // Small left shadow
+                backgroundGradient = "radial-gradient(circle, #fff 80%, #909090 80%)"; // Light shadow
             } else if (phase < 15.8) {
                 phaseName = "Full Moon";
                 shadowClip = "circle(0% at 50% 50%)"; // No shadow
+                backgroundGradient = "radial-gradient(circle, #fff 100%, #fff 100%)"; // Full light
             } else if (phase < 22.1) {
                 phaseName = "Waning Gibbous";
                 shadowClip = "ellipse(50% 50% at 75% 50%)"; // Small right shadow
+                backgroundGradient = "radial-gradient(circle, #fff 80%, #909090 80%)"; // Light shadow
             } else if (phase < 23.1) {
                 phaseName = "Last Quarter";
                 shadowClip = "inset(0 50% 0 0)"; // Right half-shadowed
+                backgroundGradient = "radial-gradient(circle, #fff 50%, #909090 50%)"; // Half and half shadow
             } else {
                 phaseName = "Waning Crescent";
                 shadowClip = "ellipse(50% 50% at 25% 50%)"; // Right crescent shadow
+                backgroundGradient = "radial-gradient(circle, #909090 70%, #fff 70%)"; // Light crescent shadow
             }
 
             // Apply shading effect
             document.getElementById("moon-shadow").style.clipPath = shadowClip;
+            document.querySelector(".moon").style.background = backgroundGradient;
             
             // Update the moon phase text
             document.getElementById("moon-phase-text").textContent = phaseName;
