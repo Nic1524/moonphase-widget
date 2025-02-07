@@ -9,7 +9,6 @@
             text-align: center;
             background-color: #f0f8ff;
             font-family: Arial, sans-serif;
-            padding: 20px;
         }
         .moon-container {
             display: flex;
@@ -18,14 +17,14 @@
             justify-content: center;
         }
         .moon-title {
-            font-size: 12px;
+            font-size: 14px;
             font-weight: bold;
             color: #0010CF;
             margin-bottom: 3px;
         }
         .moon-wrapper {
-            width: 80px; /* Reduced size */
-            height: 80px; /* Reduced size */
+            width: 35px;
+            height: 35px;
             border-radius: 50%;
             border: 2px solid #0010CF;
             display: flex;
@@ -33,8 +32,8 @@
             justify-content: center;
         }
         .moon {
-            width: 100%;
-            height: 100%;
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
             background-color: #909090; /* Light gray to resemble the Moon */
             position: relative;
@@ -42,21 +41,22 @@
         }
         .shadow {
             position: absolute;
-            width: 100%;
-            height: 100%;
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
             background-color: black;
             top: 0;
             left: 0;
-            clip-path: circle(0% at 50% 50%); /* Default no shadow (full moon) */
+            clip-path: circle(50% at 50% 50%); /* Default to fully shadowed */
         }
         .moon-phase-text {
-            margin-top: 5px; /* Reduced spacing */
+            margin-top: 5px;
             font-size: 12px;
             color: #0010CF;
         }
         .moon-illumination {
-            font-size: 10px; /* Reduced font size */
+            margin-top: 3px;
+            font-size: 12px;
             color: #0010CF;
         }
     </style>
@@ -76,63 +76,47 @@
     <script>
         function getMoonPhase() {
             const date = new Date();
-            const lastNewMoon = new Date(2024, 11, 15); // December 15th, 2024 (Last known new moon)
-            const cycleLength = 29.53; // Length of moon cycle in days
-            const daysSinceNewMoon = (date - lastNewMoon) / (1000 * 60 * 60 * 24);
-            const phase = (daysSinceNewMoon % cycleLength + cycleLength) % cycleLength; // Cycle phase value
+            const knownNewMoon = new Date(2024, 10, 1); // November 1st, 2024 (starting known new moon date)
+            const daysSinceNewMoon = (date - knownNewMoon) / (1000 * 60 * 60 * 24);
+            const phase = ((daysSinceNewMoon % 29.53) + 29.53) % 29.53; // Adjust to lunar cycle length
 
             let phaseName = "";
             let shadowClip = "";
             let illuminationPercentage = 0;
 
-            // Determine moon phase based on days since the last new moon
+            // Calculate moon phase and illumination percentage based on the days into the lunar cycle
             if (phase < 1.5) {
                 phaseName = "New Moon";
-                shadowClip = "circle(100% at 50% 50%)"; // Fully shaded
+                shadowClip = "circle(100% at 50% 50%)";
                 illuminationPercentage = 0;
             } else if (phase < 7.4) {
                 phaseName = "Waxing Crescent";
-                shadowClip = `circle(${(phase - 1.5) / (7.4 - 1.5) * 50}% at 50% 50%)`; // Graduated crescent
-                illuminationPercentage = Math.round(((phase - 1.5) / (7.4 - 1.5)) * 50);
+                shadowClip = `ellipse(50% 50% at ${25 + (phase - 1.5) * 5}% 50%)`;
+                illuminationPercentage = Math.round((phase - 1.5) / (7.4 - 1.5) * 100);
             } else if (phase < 8.4) {
                 phaseName = "First Quarter";
-                shadowClip = "inset(0 50% 0 0)"; // Right half-shadowed
+                shadowClip = "inset(0 50% 0 0)";
                 illuminationPercentage = 50;
             } else if (phase < 14.8) {
                 phaseName = "Waxing Gibbous";
-                shadowClip = `circle(${(14.8 - phase) / (14.8 - 8.4) * 50}% at 50% 50%)`; // Mostly lit, small right shadow
-                illuminationPercentage = Math.round(((phase - 8.4) / (14.8 - 8.4)) * 50) + 50;
+                shadowClip = `ellipse(50% 50% at ${75 - (phase - 8.4) * 5}% 50%)`;
+                illuminationPercentage = Math.round((phase - 8.4) / (14.8 - 8.4) * 50 + 50);
             } else if (phase < 15.8) {
                 phaseName = "Full Moon";
-                shadowClip = "circle(0% at 50% 50%)"; // No shadow (fully visible)
+                shadowClip = "circle(0% at 50% 50%)";
                 illuminationPercentage = 100;
             } else if (phase < 22.1) {
                 phaseName = "Waning Gibbous";
-                shadowClip = `circle(${(22.1 - phase) / (22.1 - 15.8) * 50}% at 50% 50%)`; // Mostly lit, small left shadow
-                illuminationPercentage = Math.round(((phase - 15.8) / (22.1 - 15.8)) * 50) + 50;
+                shadowClip = `ellipse(50% 50% at ${25 + (phase - 15.8) * 5}% 50%)`;
+                illuminationPercentage = Math.round((22.1 - phase) / (22.1 - 15.8) * 50 + 50);
             } else if (phase < 23.1) {
                 phaseName = "Last Quarter";
-                shadowClip = "inset(0 0 0 50%)"; // Left half-shadowed
+                shadowClip = "inset(0 0 0 50%)";
                 illuminationPercentage = 50;
             } else {
                 phaseName = "Waning Crescent";
-                shadowClip = `circle(${(29.53 - phase) / (29.53 - 23.1) * 50}% at 50% 50%)`; // Left crescent shadow
-                illuminationPercentage = Math.round(((phase - 23.1) / (29.53 - 23.1)) * 50);
-            }
+                shadowClip = `ellipse(50% 50% at ${75 - 
 
-            // Apply shading effect (circle for smooth transition)
-            document.getElementById("moon-shadow").style.clipPath = shadowClip;
-
-            // Update the moon phase text and illumination
-            document.getElementById("moon-phase-text").textContent = phaseName;
-            document.getElementById("moon-illumination").textContent = `Illumination: ${illuminationPercentage}%`;
-        }
-
-        // Run the function
-        getMoonPhase();
-    </script>
-</body>
-</html>
 
 
 
