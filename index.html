@@ -9,6 +9,7 @@
             text-align: center;
             background-color: #f0f8ff;
             font-family: Arial, sans-serif;
+            padding: 20px;
         }
         .moon-container {
             display: flex;
@@ -17,14 +18,14 @@
             justify-content: center;
         }
         .moon-title {
-            font-size: 14px;
+            font-size: 12px;
             font-weight: bold;
             color: #0010CF;
             margin-bottom: 3px;
         }
         .moon-wrapper {
-            width: 35px;
-            height: 35px;
+            width: 80px; /* Reduced size */
+            height: 80px; /* Reduced size */
             border-radius: 50%;
             border: 2px solid #0010CF;
             display: flex;
@@ -50,12 +51,12 @@
             clip-path: circle(0% at 50% 50%); /* Default no shadow (full moon) */
         }
         .moon-phase-text {
-            margin-top: 10px;
-            font-size: 14px;
+            margin-top: 5px; /* Reduced spacing */
+            font-size: 12px;
             color: #0010CF;
         }
         .moon-illumination {
-            font-size: 12px;
+            font-size: 10px; /* Reduced font size */
             color: #0010CF;
         }
     </style>
@@ -75,16 +76,16 @@
     <script>
         function getMoonPhase() {
             const date = new Date();
-            const lastFullMoon = new Date(2025, 0, 12); // January 12th, 2025 (Last known full moon)
+            const lastNewMoon = new Date(2024, 11, 15); // December 15th, 2024 (Last known new moon)
             const cycleLength = 29.53; // Length of moon cycle in days
-            const daysSinceFullMoon = (date - lastFullMoon) / (1000 * 60 * 60 * 24);
-            const phase = (daysSinceFullMoon % cycleLength + cycleLength) % cycleLength; // Cycle phase value
+            const daysSinceNewMoon = (date - lastNewMoon) / (1000 * 60 * 60 * 24);
+            const phase = (daysSinceNewMoon % cycleLength + cycleLength) % cycleLength; // Cycle phase value
 
             let phaseName = "";
             let shadowClip = "";
             let illuminationPercentage = 0;
 
-            // Determine moon phase based on days since the full moon
+            // Determine moon phase based on days since the last new moon
             if (phase < 1.5) {
                 phaseName = "New Moon";
                 shadowClip = "circle(100% at 50% 50%)"; // Fully shaded
@@ -132,6 +133,7 @@
     </script>
 </body>
 </html>
+
 
 
 
