@@ -69,10 +69,11 @@
     <script>
         function getMoonPhase() {
             const date = new Date();
-            const knownNewMoon = new Date(2024, 11, 15); // December 15, 2024 (JS months are 0-based)
+            const knownNewMoon = new Date(2025, 0, 12); // Jan 12, 2025 - Known New Moon
+            const lunarCycle = 29.53; // Length of a full lunar cycle in days
             const daysSinceNewMoon = (date - knownNewMoon) / (1000 * 60 * 60 * 24);
-            const phase = ((daysSinceNewMoon % 29.53) + 29.53) % 29.53;
-            const illumination = Math.round((1 - Math.cos((phase / 29.53) * 2 * Math.PI)) / 2 * 100);
+            const phase = ((daysSinceNewMoon % lunarCycle) + lunarCycle) % lunarCycle;
+            const illumination = Math.round((1 - Math.cos((phase / lunarCycle) * 2 * Math.PI)) / 2 * 100);
 
             let phaseName = "";
             let shadowClip = "";
@@ -103,24 +104,9 @@
                 shadowClip = `ellipse(${100 - illumination}% 50% at 75% 50%)`; 
             }
 
-            // Fix: Ensure the waxing/waning logic follows the illumination correctly
-            if (illumination >= 50 && phase < 15) {
-                phaseName = "Waxing Gibbous";
-            } else if (illumination >= 50 && phase >= 15) {
-                phaseName = "Waning Gibbous";
-            } else if (illumination < 50 && phase >= 23) {
-                phaseName = "Waning Crescent";
-            } else if (illumination < 50 && phase < 7) {
-                phaseName = "Waxing Crescent";
-            }
+            // Fix: Ensure phase name matches illumination and correct waxing/waning transition
+            if (illumination > 50 && phase < 15) {
+                phaseName = "Waxing G
 
-            document.getElementById("moon-shadow").style.clipPath = shadowClip;
-            document.getElementById("moon-phase-text").textContent = `${phaseName} - ${illumination}% Illumination`;
-        }
-
-        getMoonPhase();
-    </script>
-</body>
-</html>
 
 
