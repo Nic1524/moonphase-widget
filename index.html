@@ -17,9 +17,102 @@
             align-items: center;
             justify-content: center;
         }
-        .moon-ti
+        .moon-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #0010CF;
+            margin-bottom: 3px;
+        }
+        .moon-wrapper {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            border: 2px solid #0010CF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .moon {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #909090; /* Light gray to resemble the Moon */
+            position: relative;
+            overflow: hidden;
+        }
+        .shadow {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: black;
+            top: 0;
+            left: 0;
+        }
+        .moon-phase-text {
+            margin-top: 5px;
+            font-size: 12px;
+            color: #0010CF;
+        }
+    </style>
+</head>
+<body>
+    <div class="moon-container">
+        <div class="moon-title">Moon Phase</div>
+        <div class="moon-wrapper">
+            <div class="moon">
+                <div class="shadow" id="moon-shadow"></div>
+            </div>
+        </div>
+        <div class="moon-phase-text" id="moon-phase-text">Loading...</div>
+    </div>
 
+    <script>
+        function getMoonPhase() {
+            const date = new Date();
+            const knownNewMoon = new Date(2024, 11, 15); // Last known new moon: Dec 15, 2024
+            const lunarCycle = 29.53; // Average moon cycle in days
+            const daysSinceNewMoon = (date - knownNewMoon) / (1000 * 60 * 60 * 24);
+            const phase = ((daysSinceNewMoon % lunarCycle) + lunarCycle) % lunarCycle;
+            const illumination = Math.round((1 - Math.cos((phase / lunarCycle) * 2 * Math.PI)) * 50) * 2; // Calculate percentage illumination
 
+            let phaseName = "";
+            let shadowClip = "";
+
+            if (phase < 1.5) {
+                phaseName = "New Moon";
+                shadowClip = "circle(100% at 50% 50%)"; // Fully shadowed
+            } else if (phase < 7.4) {
+                phaseName = "Waxing Crescent";
+                shadowClip = `ellipse(${100 - illumination}% 50% at 25% 50%)`;
+            } else if (phase < 8.4) {
+                phaseName = "First Quarter";
+                shadowClip = "inset(0 50% 0 0)"; // Right half-shadowed
+            } else if (phase < 14.8) {
+                phaseName = "Waxing Gibbous";
+                shadowClip = `ellipse(${100 - illumination}% 50% at 75% 50%)`;
+            } else if (phase < 15.8) {
+                phaseName = "Full Moon";
+                shadowClip = "circle(0% at 50% 50%)"; // Fully visible
+            } else if (phase < 22.1) {
+                phaseName = "Waning Gibbous";
+                shadowClip = `ellipse(${illumination}% 50% at 25% 50%)`;
+            } else if (phase < 23.1) {
+                phaseName = "Last Quarter";
+                shadowClip = "inset(0 0 0 50%)"; // Left half-shadowed
+            } else {
+                phaseName = "Waning Crescent";
+                shadowClip = `ellipse(${illumination}% 50% at 75% 50%)`;
+            }
+
+            document.getElementById("moon-shadow").style.clipPath = shadowClip;
+            document.getElementById("moon-phase-text").textContent = `${phaseName} - ${illumination}%`;
+        }
+
+        getMoonPhase();
+    </script>
+</body>
+</html>
 
 
 
