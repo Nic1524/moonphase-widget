@@ -119,7 +119,19 @@
                 illuminationPercentage = Math.round(((phase - 23.1) / (29.53 - 23.1)) * 50);
             }
 
-            // Apply shading effect (circle for smoot
+            // Apply shading effect (circle for smooth transition)
+            document.getElementById("moon-shadow").style.clipPath = shadowClip;
+
+            // Update the moon phase text and illumination
+            document.getElementById("moon-phase-text").textContent = phaseName;
+            document.getElementById("moon-illumination").textContent = `Illumination: ${illuminationPercentage}%`;
+        }
+
+        // Run the function
+        getMoonPhase();
+    </script>
+</body>
+</html>
 
 
 
