@@ -47,7 +47,6 @@
             background-color: black;
             top: 0;
             left: 0;
-            clip-path: circle(50% at 50% 50%); /* Default to fully shadowed */
         }
         .moon-phase-text {
             margin-top: 5px;
@@ -70,7 +69,7 @@
     <script>
         function getMoonPhase() {
             const date = new Date();
-            const knownNewMoon = new Date(2024, 11, 15); // December 15, 2024 (Month is 0-based in JS)
+            const knownNewMoon = new Date(2024, 11, 15); // December 15, 2024 (JS months are 0-based)
             const daysSinceNewMoon = (date - knownNewMoon) / (1000 * 60 * 60 * 24);
             const phase = ((daysSinceNewMoon % 29.53) + 29.53) % 29.53;
             const illumination = Math.round((1 - Math.cos((phase / 29.53) * 2 * Math.PI)) / 2 * 100);
@@ -80,6 +79,48 @@
 
             if (phase < 1.5) {
                 phaseName = "New Moon";
-                shadowClip = "ci
+                shadowClip = "circle(100% at 50% 50%)"; // Fully shadowed
+            } else if (phase < 7.4) {
+                phaseName = "Waxing Crescent";
+                shadowClip = `ellipse(${100 - illumination}% 50% at 25% 50%)`; 
+            } else if (phase < 8.4) {
+                phaseName = "First Quarter";
+                shadowClip = "inset(0 50% 0 0)"; // Right half-shadowed
+            } else if (phase < 14.8) {
+                phaseName = "Waxing Gibbous";
+                shadowClip = `ellipse(${illumination}% 50% at 75% 50%)`; 
+            } else if (phase < 15.8) {
+                phaseName = "Full Moon";
+                shadowClip = "circle(0% at 50% 50%)"; // No shadow
+            } else if (phase < 22.1) {
+                phaseName = "Waning Gibbous";
+                shadowClip = `ellipse(${illumination}% 50% at 25% 50%)`; 
+            } else if (phase < 23.1) {
+                phaseName = "Last Quarter";
+                shadowClip = "inset(0 0 0 50%)"; // Left half-shadowed
+            } else {
+                phaseName = "Waning Crescent";
+                shadowClip = `ellipse(${100 - illumination}% 50% at 75% 50%)`; 
+            }
+
+            // Fix: Ensure the waxing/waning logic follows the illumination correctly
+            if (illumination >= 50 && phase < 15) {
+                phaseName = "Waxing Gibbous";
+            } else if (illumination >= 50 && phase >= 15) {
+                phaseName = "Waning Gibbous";
+            } else if (illumination < 50 && phase >= 23) {
+                phaseName = "Waning Crescent";
+            } else if (illumination < 50 && phase < 7) {
+                phaseName = "Waxing Crescent";
+            }
+
+            document.getElementById("moon-shadow").style.clipPath = shadowClip;
+            document.getElementById("moon-phase-text").textContent = `${phaseName} - ${illumination}% Illumination`;
+        }
+
+        getMoonPhase();
+    </script>
+</body>
+</html>
 
 
