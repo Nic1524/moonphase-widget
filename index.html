@@ -35,7 +35,7 @@
             width: 30px;
             height: 30px;
             border-radius: 50%;
-            background-color: #909090; /* Light gray to resemble the Moon */
+            background-color: #F8F8F8; /* Moon color */
             position: relative;
             overflow: hidden;
         }
@@ -47,6 +47,7 @@
             background-color: black;
             top: 0;
             left: 0;
+            mix-blend-mode: multiply;
         }
         .moon-phase-text {
             margin-top: 5px;
@@ -74,10 +75,8 @@
             const daysSinceNewMoon = (today - newMoonDate) / (1000 * 60 * 60 * 24);
             const phase = (daysSinceNewMoon % lunarCycle + lunarCycle) % lunarCycle;
 
-            // Calculate illumination percentage (0% = New Moon, 100% = Full Moon)
             let illumination = Math.round((1 - Math.cos((phase / lunarCycle) * 2 * Math.PI)) * 50) * 2;
 
-            // Determine the phase name and shadow positioning
             let phaseName = "";
             let shadowClip = "";
 
@@ -94,14 +93,14 @@
                 illumination = 50;
             } else if (phase < 14.8) {
                 phaseName = "Waxing Gibbous";
-                shadowClip = "ellipse(50% 50% at 75% 50%)"; // Mostly lit, small right shadow
+                shadowClip = "ellipse(50% 50% at 75% 50%)"; // Left shadow
             } else if (phase < 15.8) {
                 phaseName = "Full Moon";
-                shadowClip = "circle(0% at 50% 50%)"; // No shadow
+                shadowClip = "circle(0% at 50% 50%)"; // Fully lit
                 illumination = 100;
             } else if (phase < 22.1) {
                 phaseName = "Waning Gibbous";
-                shadowClip = "ellipse(50% 50% at 25% 50%)"; // Mostly lit, small left shadow
+                shadowClip = "ellipse(50% 50% at 25% 50%)"; // Right shadow
             } else if (phase < 23.1) {
                 phaseName = "Last Quarter";
                 shadowClip = "inset(0 0 0 50%)"; // Left half shadowed
@@ -111,7 +110,7 @@
                 shadowClip = "ellipse(50% 50% at 75% 50%)"; // Left crescent shadow
             }
 
-            // Apply correct shadow positioning
+            // Apply correct shadow
             document.getElementById("moon-shadow").style.clipPath = shadowClip;
 
             // Display correct phase name and illumination %
