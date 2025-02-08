@@ -35,7 +35,7 @@
             width: 30px;
             height: 30px;
             border-radius: 50%;
-            background-color: #909090; /* Moon color */
+            background-color: #909090; /* Light gray to resemble the Moon */
             position: relative;
             overflow: hidden;
         }
@@ -74,10 +74,10 @@
             const daysSinceNewMoon = (today - newMoonDate) / (1000 * 60 * 60 * 24);
             const phase = (daysSinceNewMoon % lunarCycle + lunarCycle) % lunarCycle;
 
-            // Fix illumination calculation
+            // Calculate illumination percentage (0% = New Moon, 100% = Full Moon)
             let illumination = Math.round((1 - Math.cos((phase / lunarCycle) * 2 * Math.PI)) * 50) * 2;
-            if (illumination < 0) illumination = 0; // Prevent negative illumination
 
+            // Determine the phase name and shadow positioning
             let phaseName = "";
             let shadowClip = "";
 
@@ -87,32 +87,34 @@
                 illumination = 0;
             } else if (phase < 7.4) {
                 phaseName = "Waxing Crescent";
-                shadowClip = `ellipse(${100 - illumination}% 50% at 25% 50%)`; // Right crescent shadow
+                shadowClip = "ellipse(50% 50% at 25% 50%)"; // Right crescent shadow
             } else if (phase < 8.4) {
                 phaseName = "First Quarter";
                 shadowClip = "inset(0 50% 0 0)"; // Right half shadowed
                 illumination = 50;
             } else if (phase < 14.8) {
                 phaseName = "Waxing Gibbous";
-                shadowClip = `ellipse(${100 - illumination}% 50% at 75% 50%)`; // Mostly lit, small right shadow
+                shadowClip = "ellipse(50% 50% at 75% 50%)"; // Mostly lit, small right shadow
             } else if (phase < 15.8) {
                 phaseName = "Full Moon";
                 shadowClip = "circle(0% at 50% 50%)"; // No shadow
                 illumination = 100;
             } else if (phase < 22.1) {
                 phaseName = "Waning Gibbous";
-                shadowClip = `ellipse(${illumination}% 50% at 25% 50%)`; // Mostly lit, small left shadow
+                shadowClip = "ellipse(50% 50% at 25% 50%)"; // Mostly lit, small left shadow
             } else if (phase < 23.1) {
                 phaseName = "Last Quarter";
                 shadowClip = "inset(0 0 0 50%)"; // Left half shadowed
                 illumination = 50;
             } else {
                 phaseName = "Waning Crescent";
-                shadowClip = `ellipse(${illumination}% 50% at 75% 50%)`; // Left crescent shadow
+                shadowClip = "ellipse(50% 50% at 75% 50%)"; // Left crescent shadow
             }
 
-            // Ensure correct shadow orientation
+            // Apply correct shadow positioning
             document.getElementById("moon-shadow").style.clipPath = shadowClip;
+
+            // Display correct phase name and illumination %
             document.getElementById("moon-phase-text").textContent = `${phaseName} - ${illumination}%`;
         }
 
@@ -120,6 +122,7 @@
     </script>
 </body>
 </html>
+
 
 
 
