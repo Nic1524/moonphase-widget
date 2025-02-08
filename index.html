@@ -69,11 +69,13 @@
     <script>
         function getMoonPhase() {
             const date = new Date();
-            const knownNewMoon = new Date(2024, 11, 15); // Last known new moon: Dec 15, 2024
+            const knownNewMoon = new Date(2025, 0, 30); // Last New Moon: January 30, 2025
             const lunarCycle = 29.53; // Average moon cycle in days
             const daysSinceNewMoon = (date - knownNewMoon) / (1000 * 60 * 60 * 24);
             const phase = ((daysSinceNewMoon % lunarCycle) + lunarCycle) % lunarCycle;
-            const illumination = Math.round((1 - Math.cos((phase / lunarCycle) * 2 * Math.PI)) * 50) * 2; // Calculate percentage illumination
+
+            // Calculate illumination percentage
+            const illumination = Math.round((1 - Math.cos((phase / lunarCycle) * 2 * Math.PI)) * 50) * 2;
 
             let phaseName = "";
             let shadowClip = "";
@@ -104,6 +106,7 @@
                 shadowClip = `ellipse(${illumination}% 50% at 75% 50%)`;
             }
 
+            // Apply correct shadow and text
             document.getElementById("moon-shadow").style.clipPath = shadowClip;
             document.getElementById("moon-phase-text").textContent = `${phaseName} - ${illumination}%`;
         }
@@ -112,6 +115,7 @@
     </script>
 </body>
 </html>
+
 
 
 
