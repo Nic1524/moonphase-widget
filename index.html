@@ -35,7 +35,7 @@
             width: 30px;
             height: 30px;
             border-radius: 50%;
-            background-color: #909090; /* Light gray to resemble the Moon */
+            background-color: #909090; /* Moon color */
             position: relative;
             overflow: hidden;
         }
@@ -74,8 +74,9 @@
             const daysSinceNewMoon = (today - newMoonDate) / (1000 * 60 * 60 * 24);
             const phase = (daysSinceNewMoon % lunarCycle + lunarCycle) % lunarCycle;
 
-            // Calculate illumination percentage
-            const illumination = Math.round((1 - Math.cos((phase / lunarCycle) * 2 * Math.PI)) * 50) * 2;
+            // Fix illumination calculation
+            let illumination = Math.round((1 - Math.cos((phase / lunarCycle) * 2 * Math.PI)) * 50) * 2;
+            if (illumination < 0) illumination = 0; // Prevent negative illumination
 
             let phaseName = "";
             let shadowClip = "";
@@ -83,34 +84,35 @@
             if (phase < 1.5) {
                 phaseName = "New Moon";
                 shadowClip = "circle(100% at 50% 50%)"; // Fully shadowed
+                illumination = 0;
             } else if (phase < 7.4) {
                 phaseName = "Waxing Crescent";
                 shadowClip = `ellipse(${100 - illumination}% 50% at 25% 50%)`; // Right crescent shadow
             } else if (phase < 8.4) {
                 phaseName = "First Quarter";
                 shadowClip = "inset(0 50% 0 0)"; // Right half shadowed
+                illumination = 50;
             } else if (phase < 14.8) {
                 phaseName = "Waxing Gibbous";
                 shadowClip = `ellipse(${100 - illumination}% 50% at 75% 50%)`; // Mostly lit, small right shadow
             } else if (phase < 15.8) {
                 phaseName = "Full Moon";
                 shadowClip = "circle(0% at 50% 50%)"; // No shadow
+                illumination = 100;
             } else if (phase < 22.1) {
                 phaseName = "Waning Gibbous";
                 shadowClip = `ellipse(${illumination}% 50% at 25% 50%)`; // Mostly lit, small left shadow
             } else if (phase < 23.1) {
                 phaseName = "Last Quarter";
                 shadowClip = "inset(0 0 0 50%)"; // Left half shadowed
+                illumination = 50;
             } else {
                 phaseName = "Waning Crescent";
                 shadowClip = `ellipse(${illumination}% 50% at 75% 50%)`; // Left crescent shadow
             }
 
-            // Fix the shadow to be opposite
-            const oppositeShadow = shadowClip.replace("left", "right").replace("right", "left");
-
-            // Apply correct shadow and text
-            document.getElementById("moon-shadow").style.clipPath = oppositeShadow;
+            // Ensure correct shadow orientation
+            document.getElementById("moon-shadow").style.clipPath = shadowClip;
             document.getElementById("moon-phase-text").textContent = `${phaseName} - ${illumination}%`;
         }
 
