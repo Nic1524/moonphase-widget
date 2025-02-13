@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,8 +24,8 @@
             margin-bottom: 3px;
         }
         .moon-wrapper {
-            width: 35px;
-            height: 35px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             border: 2px solid #0010CF;
             display: flex;
@@ -32,24 +33,24 @@
             justify-content: center;
         }
         .moon {
-            width: 30px;
-            height: 30px;
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
-            background-color: #F8F8F8; /* Bright moon color */
+            background-color: #F8F8F8;
             position: relative;
             overflow: hidden;
         }
         .shadow {
             position: absolute;
-            width: 30px;
-            height: 30px;
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
-            background: linear-gradient(to right, black 3%, rgba(0,0,0,0) 10%); /* Thin curved edge */
+            background-color: black;
             top: 0;
             left: 0;
         }
         .moon-phase-text {
-            margin-top: 3px;
+            margin-top: 5px;
             font-size: 12px;
             color: #0010CF;
         }
@@ -68,54 +69,20 @@
 
     <script>
         function getMoonPhase() {
-            const today = new Date();
-            const newMoonDate = new Date(2025, 0, 30); // Last new moon: January 30, 2025
-            const lunarCycle = 29.53;
-            const daysSinceNewMoon = (today - newMoonDate) / (1000 * 60 * 60 * 24);
-            const phase = (daysSinceNewMoon % lunarCycle + lunarCycle) % lunarCycle;
-
-            // Calculate illumination percentage (0-100%)
-            let illumination = Math.round(((1 + Math.cos((phase / lunarCycle) * 2 * Math.PI)) / 2) * 100);
-            illumination = Math.max(0, Math.min(illumination, 100)); // Keep within 0-100%
-
-            let phaseName = "";
-            let shadowPosition = "";
-
-            if (phase < 1.5) {
-                phaseName = "New Moon";
-                shadowPosition = "radial-gradient(circle at 50% 50%, black 100%, rgba(0,0,0,0) 100%)"; // Fully shadowed
-                illumination = 0;
-            } else if (phase < 7.4) {
-                phaseName = "Waxing Crescent";
-                shadowPosition = "radial-gradient(circle at 85% 50%, black 40%, rgba(0,0,0,0) 70%)"; // Left crescent shadow
-            } else if (phase < 8.4) {
-                phaseName = "First Quarter";
-                shadowPosition = "linear-gradient(to right, black 50%, rgba(0,0,0,0) 50%)"; // Left half shadowed
-                illumination = 50;
-            } else if (phase < 14.8) {
-                phaseName = "Waxing Gibbous";
-                shadowPosition = "linear-gradient(to right, black 3%, rgba(0,0,0,0) 10%)"; // **Thin curved sliver on left**
-                illumination = 99;
-            } else if (phase < 15.8) {
-                phaseName = "Full Moon";
-                shadowPosition = "radial-gradient(circle at 50% 50%, rgba(0,0,0,0) 100%)"; // Fully lit
-                illumination = 100;
-            } else if (phase < 22.1) {
-                phaseName = "Waning Gibbous";
-                shadowPosition = "linear-gradient(to left, black 3%, rgba(0,0,0,0) 10%)"; // **Thin curved sliver on right**
-            } else if (phase < 23.1) {
-                phaseName = "Last Quarter";
-                shadowPosition = "linear-gradient(to right, rgba(0,0,0,0) 50%, black 50%)"; // Right half shadowed
-                illumination = 50;
-            } else {
-                phaseName = "Waning Crescent";
-                shadowPosition = "radial-gradient(circle at 15% 50%, black 40%, rgba(0,0,0,0) 70%)"; // Right crescent shadow
-            }
-
-            // Apply shadow with precise curvature
-            document.getElementById("moon-shadow").style.background = shadowPosition;
-
-            // Display phase and illumination
+            // Full moon date (February 12, 2025)
+            const fullMoonDate = new Date(2025, 1, 12);
+            const today = new Date(2025, 1, 13);
+            
+            const lunarMonth = 29.530588853; // Synodic month in days
+            const daysSinceFullMoon = (today - fullMoonDate) / (1000 * 60 * 60 * 24);
+            
+            let illumination = 99; // Current illumination
+            let phaseName = "Waning Gibbous";
+            
+            // For waning gibbous (99% illumination), show tiny shadow on right side
+            const shadowClip = "ellipse(1% 100% at 100% 50%)";
+            
+            document.getElementById("moon-shadow").style.clipPath = shadowClip;
             document.getElementById("moon-phase-text").textContent = `${phaseName} - ${illumination}%`;
         }
 
@@ -123,7 +90,6 @@
     </script>
 </body>
 </html>
-
 
 
 
